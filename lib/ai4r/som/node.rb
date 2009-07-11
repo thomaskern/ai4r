@@ -30,11 +30,11 @@ module Ai4r
 
       include Ai4r::Data::Parameterizable
 
-      parameters_info :weights => "holds the current weight",
-                      :instantiated_weight => "holds the very first weight",
-                      :x => "holds the row ID of the unit in the map",
-                      :y => "holds the column ID of the unit in the map",
-                      :id => "id of the node"      
+      parameters_info :weights => {:description => "holds the current weight"},
+                      :instantiated_weight => {:description => "holds the very first weight"},
+                      :x => {:description => "holds the row ID of the unit in the map"},
+                      :y => {:description => "holds the column ID of the unit in the map"},
+                      :id => {:description => "id of the node"}      
 
       # creates an instance of Node and instantiates the weights
       # the parameters is a uniq and sequential ID as well as the number of total nodes

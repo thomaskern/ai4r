@@ -22,11 +22,11 @@ module Ai4r
       
       attr_reader :data_set, :number_of_clusters, :clusters
       
-      parameters_info :distance_function => 
+      parameters_info :distance_function => {:description =>
           "Custom implementation of distance function. " +
           "It must be a closure receiving two data items and return the " +
           "distance bewteen them. By default, this algorithm uses " + 
-          "ecuclidean distance of numeric attributes to the power of 2."
+          "ecuclidean distance of numeric attributes to the power of 2."}
       
       def initialize
         @distance_function = lambda do |a,b| 

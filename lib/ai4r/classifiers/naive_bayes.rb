@@ -56,8 +56,8 @@ module Ai4r
     #
     class NaiveBayes < Classifier
 
-      parameters_info :m => "Default value is set to 0. It may be set to a value greater than " +
-        "0 when the size of the dataset is relatively small"
+      parameters_info :m => {:description => "Default value is set to 0. It may be set to a value greater than " +
+        "0 when the size of the dataset is relatively small"}
           
       def initialize
         @m = 0

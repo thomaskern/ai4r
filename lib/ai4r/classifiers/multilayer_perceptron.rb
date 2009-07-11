@@ -40,16 +40,16 @@ module Ai4r
 
       attr_reader :data_set, :class_value, :network, :domains
       
-      parameters_info :network_class => "Neural network implementation class."+
-          "By default: Ai4r::NeuralNetwork::Backpropagation.",
-        :network_parameters => "parameters to be forwarded to the back end " +
-          "neural network.", 
-        :hidden_layers => "Hidden layer structure. E.g. [8, 6] will generate " +
-          "2 hidden layers with 8 and 6 neurons each. By default []",
-        :training_iterations => "How many times the training should be " +
-          "repeated. By default: 1000",
-        :active_node_value => "Default: 1",
-        :inactive_node_value => "Default: 0"
+      parameters_info :network_class => {:description => "Neural network implementation class."+
+          "By default: Ai4r::NeuralNetwork::Backpropagation."},
+        :network_parameters => {:description => "parameters to be forwarded to the back end " +
+          "neural network."},
+        :hidden_layers => {:description => "Hidden layer structure. E.g. [8, 6] will generate " +
+          "2 hidden layers with 8 and 6 neurons each. By default []"},
+        :training_iterations => {:description => "How many times the training should be " +
+          "repeated. By default: 1000"},
+        :active_node_value => {:description => "Default: 1"},
+        :inactive_node_value => {:description => "Default: 0"}
     
       def initialize
         @network_class = Ai4r::NeuralNetwork::Backpropagation

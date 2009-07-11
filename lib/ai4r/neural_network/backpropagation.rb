@@ -86,19 +86,19 @@ module Ai4r
       
       include Ai4r::Data::Parameterizable
       
-      parameters_info :disable_bias => "If true, the alforithm will not use "+
-            "bias nodes. False by default.",
-        :initial_weight_function => "f(n, i, j) must return the initial "+
+      parameters_info :disable_bias => {:description => "If true, the alforithm will not use "+
+            "bias nodes. False by default."},
+        :initial_weight_function => {:description => "f(n, i, j) must return the initial "+
             "weight for the conection between the node i in layer n, and "+
-            "node j in layer n+1. By default a random number in [-1, 1) range.",
-        :propagation_function => "By default: " + 
-            "lambda { |x| 1/(1+Math.exp(-1*(x))) }",         
-        :derivative_propagation_function => "Derivative of the propagation "+
+            "node j in layer n+1. By default a random number in [-1, 1) range."},
+        :propagation_function => {:description => "By default: " +
+            "lambda { |x| 1/(1+Math.exp(-1*(x))) }"},
+        :derivative_propagation_function => {:description => "Derivative of the propagation "+
             "function, based on propagation function output. By default: " +
-            "lambda { |y| y*(1-y) }, where y=propagation_function(x)",
-        :learning_rate => "By default 0.25",        
-        :momentum => "By default 0.1. Set this parameter to 0 to disable "+
-            "momentum."
+            "lambda { |y| y*(1-y) }, where y=propagation_function(x)"},
+        :learning_rate => {:description => "By default 0.25"},
+        :momentum => {:description => "By default 0.1. Set this parameter to 0 to disable "+
+            "momentum."}
           
       attr_accessor :structure, :weights, :activation_nodes
       

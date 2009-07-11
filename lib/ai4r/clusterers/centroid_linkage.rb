@@ -30,10 +30,10 @@ module Ai4r
     class CentroidLinkage < SingleLinkage
       
     parameters_info :distance_function => 
-          "Custom implementation of distance function. " +
+          {:description => "Custom implementation of distance function. " +
           "It must be a closure receiving two data items and return the " +
           "distance bewteen them. By default, this algorithm uses " + 
-          "ecuclidean distance of numeric attributes to the power of 2."
+          "ecuclidean distance of numeric attributes to the power of 2."}
       
       # Build a new clusterer, using data examples found in data_set.
       # Items will be clustered in "number_of_clusters" different

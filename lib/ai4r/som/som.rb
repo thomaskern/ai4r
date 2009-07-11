@@ -53,10 +53,10 @@ module Ai4r
 
       include Ai4r::Data::Parameterizable
 
-      parameters_info :nodes  => "sets the architecture of the map (nodes x nodes)",
-                      :dimension => "sets the dimension of the input",
-                      :layer => "instance of a layer, defines how the training algorithm works",
-                      :epoch => "number of finished epochs"
+      parameters_info :nodes  => {:description => "sets the architecture of the map (nodes x nodes)"},
+                      :dimension => {:description => "sets the dimension of the input"},
+                      :layer => {:description => "instance of a layer, defines how the training algorithm works"},
+                      :epoch => {:description => "number of finished epochs"}
 
       def initialize(dim, number_of_nodes, layer)
         @layer = layer

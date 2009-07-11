@@ -23,18 +23,18 @@ module Ai4r
       attr_reader :data_set, :number_of_clusters
       attr_reader :clusters, :centroids, :iterations
       
-      parameters_info :max_iterations => "Maximum number of iterations to " + 
-        "build the clusterer. By default it is uncapped.",
-        :distance_function => "Custom implementation of distance function. " +
+      parameters_info :max_iterations => {:description => "Maximum number of iterations to " +
+        "build the clusterer. By default it is uncapped."},
+        :distance_function => {:description => "Custom implementation of distance function. " +
           "It must be a closure receiving two data items and return the " +
           "distance bewteen them. By default, this algorithm uses " + 
-          "ecuclidean distance of numeric attributes to the power of 2.",
-        :centroid_function => "Custom implementation to calculate the " +
+          "ecuclidean distance of numeric attributes to the power of 2."},
+        :centroid_function => {:description => "Custom implementation to calculate the " +
           "centroid of a cluster. It must be a closure receiving an array of " +
           "data sets, and return an array of data items, representing the " + 
           "centroids of for each data set. " +
           "By default, this algorithm returns a data items using the mode "+
-          "or mean of each attribute on each data set."
+          "or mean of each attribute on each data set."}
       
       def initialize
         @distance_function = nil

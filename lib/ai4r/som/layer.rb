@@ -27,9 +27,9 @@ module Ai4r
 
       include Ai4r::Data::Parameterizable
 
-      parameters_info :nodes => "number of nodes, has to be equal to the som",
-                      :epochs => "number of epochs the algorithm has to run",
-                      :radius => "sets the initial neighborhoud radius"
+      parameters_info :nodes => {:description => "number of nodes, has to be equal to the som"},
+                      :epochs => {:description => "number of epochs the algorithm has to run"},
+                      :radius => {:description => "sets the initial neighborhoud radius"}
 
       def initialize(nodes, radius, epochs = 100, learning_rate = 0.7)
         raise("Too few nodes") if nodes < 3

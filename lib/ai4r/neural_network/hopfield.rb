@@ -35,12 +35,12 @@ require File.dirname(__FILE__) + '/../data/parameterizable'
       
       attr_reader :weights, :nodes
       
-      parameters_info :eval_iterations => "The network will run for a maximum "+
+      parameters_info :eval_iterations => {:description => "The network will run for a maximum "+
         "of 'eval_iterations' iterations while evaluating an input. 500 by " +
-        "default.",
-        :active_node_value => "Default: 1",
-        :inactive_node_value => "Default: -1",
-        :threshold => "Default: 0"
+        "default."},
+        :active_node_value => {:description => "Default: 1"},
+        :inactive_node_value => {:description => "Default: -1"},
+        :threshold => {:description => "Default: 0"}
             
       def initialize
         @eval_iterations = 500
