@@ -8,6 +8,7 @@
 # Mozilla Foundation at http://www.mozilla.org/MPL/MPL-1.1.txt
 
 require File.dirname(__FILE__) +  "/parameterizable/parameter_description_missing"
+require File.dirname(__FILE__) +  "/parameterizable/parameterizable_checker"
 
 module Ai4r
   module Data
@@ -68,26 +69,7 @@ module Ai4r
         return params
       end
 
-      def check_param_values
-        self.class.get_parameters_info.each do |k, v|
-          next unless v.has_key?(:check)
-          raise("ASSHOLE DEFINE CORRECT VALUES, MAN!!!!") unless v[:check].call(self.send(k))
-        end
-      end
-
       def self.included(base)
-        old_initialize = base.instance_method(:initialize)
-        s = []
-        old_initialize.arity.times {|t| s << "param#{t}"}
-
-        bod = <<-EOV
-          base.send(:define_method, :initialize) do |#{s.join(",")}|
-            old_initialize.bind(self).call(#{s.join(",")})
-            check_param_values
-          end
-        EOV
-        eval bod
-
         base.extend(ClassMethods)
       end
 

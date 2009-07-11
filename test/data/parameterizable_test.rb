@@ -20,19 +20,33 @@ module Ai4r
         ParameterizablePseudoClass.send :parameters_info, :first => {:description => "No checks"},
                                         :second => {:description => "Nil-check", :check => Proc.new{|x| !x.nil?}}
 
-        assert_raise(Exception, RuntimeError) { ParameterizablePseudoClass.new(1, nil) }
+        assert_raise(ParameterizableValueIncorrect) { ParameterizablePseudoClass.new(1, nil) }
       end
 
       def test_should_override_current_param_information
         ParameterizablePseudoClass.send :parameters_info, :first => {:description => "No checks"},
                                         :second => {:description => "Nil-check", :check => Proc.new{|x| !x.nil?}}
 
-        assert_raise(Exception, RuntimeError) { ParameterizablePseudoClass.new(1, nil) }
+        assert_raise(ParameterizableValueIncorrect) { ParameterizablePseudoClass.new(1, nil) }
 
         ParameterizablePseudoClass.send :parameters_info, :first => {:description => "No checks"},
                                         :second => {:description => "No check"}
 
-        assert_nothing_thrown(Exception) {ParameterizablePseudoClass.new(1, nil)}
+        assert_nothing_thrown(ParameterizableValueIncorrect) {ParameterizablePseudoClass.new(1, nil)}
+      end
+
+      def test_should_not_inherit_param_info_when_naked
+        set_paramater_for_pseudo "descr", nil, "nice", Proc.new{|x| !x.nil?}
+        assert_nothing_thrown(ParameterizableValueIncorrect) {ChildEmptyParamPseudoClass.new "foo",nil}
+      end
+
+      def test_should_inherit_from_base_and_override_param_info_with_no_init
+        assert_raise(ParameterizableValueIncorrect) {ChildParamPseudoClass.new nil,"nil"}
+      end
+
+      def test_should_accept_interhitance_and_override_param_info
+        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "description"}, :second => {:description => "description"}}
+        assert_nothing_thrown(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
       end
 
       private
