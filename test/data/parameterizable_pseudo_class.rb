@@ -49,3 +49,15 @@ class ChildInitParamPseudoClass < BaseParameterizablePseudoClass
     @second = second
   end
 end
+
+class ChildDiffParamsPseudoClass < BaseParameterizablePseudoClass
+
+  parameters_info :first => {:description => "description"}, :second => {:description => "description", :check => Proc.new{|x| !x.nil?}}, :third => {:description => "asdf"}
+
+  def initialize(first, second, third)
+    @first = first
+    @second = second
+    @third = third
+  end
+
+end

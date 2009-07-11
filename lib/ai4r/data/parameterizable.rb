@@ -36,6 +36,8 @@ module Ai4r
 
 
         private
+
+
         # checks that every passed parameter in parameters_info has a key
         # description and a text assigned
         def check_for_param_description

@@ -70,6 +70,16 @@ module Ai4r
         assert_raise(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
       end
 
+      def test_should_count_number_params_in_init_and_compare_to_param_info
+        #assert_raise(RuntimeError) {ChildEmptyParamPseudoClass.send :parameters_info, {:first => {:description => "descr"}}}
+      end
+
+
+      def test_should_pass_params_when_init_in_base_class_differentiates_from_child
+        assert_raise(ParameterizableValueIncorrect) {ChildDiffParamsPseudoClass.new "foo",nil, nil}
+      end
+
+
       private
 
       def set_parameter_hash_for_pseudo(hash)
