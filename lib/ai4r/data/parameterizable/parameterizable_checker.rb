@@ -8,6 +8,7 @@
 # Mozilla Foundation at http://www.mozilla.org/MPL/MPL-1.1.txt
 
 require File.dirname(__FILE__) + '/parameterizable_value_incorrect'
+Dir[File.dirname(__FILE__) + '/default_checkers/*'].each { |file| require file }
 
 module Ai4r
   module Data
@@ -33,9 +34,17 @@ module Ai4r
       # if the Proc-call returns true, an exception will be raised
       def check_param_values
         self.class.get_parameters_info.each do |k, v|
-          next unless v.has_key?(:check)
-          raise ParameterizableValueIncorrect.new(v[:check], self.send(k)) unless v[:check].call(self.send(k))
+          next unless is_a_checkable_class?(v)
+
+          unless v[:check].call(self.send(k))
+            raise ParameterizableValueIncorrect.new(v[:check], self.send(k))
+          end
         end
+      end
+
+      # checks v for either a proc or a constant of type ParamChecker
+      def is_a_checkable_class?(v)
+        v.has_key?(:check) && (v[:check].is_a?(Proc) || (v[:check].is_a?(Class) && v[:check].new.is_a?(ParamChecker)))
       end
 
     end

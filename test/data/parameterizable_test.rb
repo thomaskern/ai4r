@@ -24,7 +24,6 @@ module Ai4r
         assert_raise(ParameterDescriptionMissing) { set_parameter_hash_for_pseudo({:first => {:text => "description"}, :second => {:text => "description"}})}        
       end
 
-
       def test_should_throw_exception_when_check_proc_is_true
         ParameterizablePseudoClass.send :parameters_info, :first => {:description => "No checks"},
                                         :second => {:description => "Nil-check", :check => Proc.new{|x| !x.nil?}}
@@ -56,6 +55,19 @@ module Ai4r
       def test_should_accept_interhitance_and_override_param_info
         ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "description"}, :second => {:description => "description"}}
         assert_nothing_thrown(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
+      end
+
+      def test_should_not_run_check_if_check_is_not_a_proc
+        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "description"}, :second => {:description => "description", :check => "asdf"}}
+        assert_nothing_thrown(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
+
+        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "description"}, :second => {:description => "description", :check => nil}}
+        assert_nothing_thrown(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
+      end
+
+      def test_should_pass_default_nil_checker_to_param_info
+        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "description"}, :second => {:description => "description", :check => ParamNilChecker}}
+        assert_raise(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
       end
 
       private
