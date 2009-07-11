@@ -7,30 +7,44 @@
 # the Mozilla Public License version 1.1  as published by the 
 # Mozilla Foundation at http://www.mozilla.org/MPL/MPL-1.1.txt
 
+require File.dirname(__FILE__) +  "/parameterizable/parameter_description_missing"
+
 module Ai4r
   module Data
     module Parameterizable
-	
+
       module ClassMethods
-        
+
         # Get info on what can be parameterized on this algorithm.
         # It returns a hash with the following format:
         # { :param_name => "Info on the parameter" }
         def get_parameters_info
           return @_params_info_ || {}
         end
-        
+
         # Set info on what can be parameterized on this algorithm.
         # You must provide a hash with the following format:
         # { :param_name => "Info on the parameter" }        
         def parameters_info(params_info)
           @_params_info_ = params_info
+          check_for_param_description
           params_info.keys.each do |param|
             attr_accessor param
           end
         end
+
+
+        private
+        # checks that every passed parameter in parameters_info has a key
+        # description and a text assigned
+        def check_for_param_description
+          @_params_info_.each do |k, v|
+            raise ParameterDescriptionMissing.new("No description assigned to #{k}") if !v.has_key?(:description) || v[:description].to_s.length == 0
+          end
+        end
+
       end
-  
+
       # Set parameter values on this algorithm instance.
       # You must provide a hash with the folowing format:
       # { :param_name => parameter_value }
@@ -42,7 +56,7 @@ module Ai4r
         end
         return self
       end
-      
+
       # Get parameter values on this algorithm instance.
       # Returns a hash with the folowing format:
       # { :param_name => parameter_value }
@@ -54,10 +68,29 @@ module Ai4r
         return params
       end
 
+      def check_param_values
+        self.class.get_parameters_info.each do |k, v|
+          next unless v.has_key?(:check)
+          raise("ASSHOLE DEFINE CORRECT VALUES, MAN!!!!") unless v[:check].call(self.send(k))
+        end
+      end
+
       def self.included(base)
+        old_initialize = base.instance_method(:initialize)
+        s = []
+        old_initialize.arity.times {|t| s << "param#{t}"}
+
+        bod = <<-EOV
+          base.send(:define_method, :initialize) do |#{s.join(",")}|
+            old_initialize.bind(self).call(#{s.join(",")})
+            check_param_values
+          end
+        EOV
+        eval bod
+
         base.extend(ClassMethods)
       end
-  
+
     end
   end
 end
