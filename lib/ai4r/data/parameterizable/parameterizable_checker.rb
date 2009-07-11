@@ -63,7 +63,7 @@ end
 # PATCH MONKEY
 class Class
 
-  #checks whether or not a method named 'initialize' has been added and if the Parameterizable-module is included
+  # checks whether or not a method named 'initialize' has been added and if the Parameterizable-module is included
   # if so, it includes the ParameterizableChecker-module
   def method_added(method_name)
     if method_name.to_s == "initialize" && self.include?(Ai4r::Data::Parameterizable) && @included_param_checker.nil? #&& !self.include?(Ai4r::Data::ParameterizableChecker)
