@@ -8,7 +8,7 @@
 # Mozilla Foundation at http://www.mozilla.org/MPL/MPL-1.1.txt
 
 require File.dirname(__FILE__) + '/parameterizable_value_incorrect'
-Dir[File.dirname(__FILE__) + '/default_checkers/*'].each { |file| require file }
+Dir[File.dirname(__FILE__) + '/default_checkers/*'].sort.each { |file| require file }
 
 module Ai4r
   module Data
@@ -18,25 +18,23 @@ module Ai4r
       # it in the new 
       def self.included(base)
         old_initialize = base.instance_method(:initialize)
-        s = []
-        old_initialize.arity.times {|t| s << "param#{t}"}
 
         bod = <<-EOV
-          base.send(:define_method, :initialize) do |#{s.join(",")}|
-            old_initialize.bind(self).call(#{s.join(",")})
+          base.send(:define_method, :initialize) do |#{params_for_init old_initialize}|
+            old_initialize.bind(self).call(#{params_for_init old_initialize})
             check_param_values
           end
         EOV
         eval bod
       end
 
+      private
+
       # checks the presence of a check-key. if present and if it is a Proc, it gets called
       # if the Proc-call returns true, an exception will be raised
       def check_param_values
         self.class.get_parameters_info.each do |k, v|
-          next unless is_a_checkable_class?(v)
-
-          unless v[:check].call(self.send(k))
+          if is_a_checkable_class?(v) && !v[:check].call(self.send(k))
             raise ParameterizableValueIncorrect.new(v[:check], self.send(k))
           end
         end
@@ -44,7 +42,17 @@ module Ai4r
 
       # checks v for either a proc or a constant of type ParamChecker
       def is_a_checkable_class?(v)
-        v.has_key?(:check) && (v[:check].is_a?(Proc) || (v[:check].is_a?(Class) && v[:check].new.is_a?(ParamChecker)))
+        v.has_key?(:check) &&
+                (v[:check].is_a?(Proc) || (param_checker?(v[:check])))
+      end
+
+      # checks if v is of type ParamChecker
+      def param_checker?(v)
+        v.is_a?(Class) && v.new.is_a?(ParamChecker)
+      end
+
+      def self.params_for_init(old_initialize)
+        (1..old_initialize.arity).map {|t| "param#{t}"}.join ","
       end
 
     end

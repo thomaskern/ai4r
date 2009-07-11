@@ -21,7 +21,7 @@ module Ai4r
       end
 
       def test_should_check_description_key_set_in_params
-        assert_raise(ParameterDescriptionMissing) { set_parameter_hash_for_pseudo({:first => {:text => "description"}, :second => {:text => "description"}})}        
+        assert_raise(ParameterDescriptionMissing) { set_parameter_hash_for_pseudo({:first => {:text => "descr"}, :second => {:text => "descr"}})}        
       end
 
       def test_should_throw_exception_when_check_proc_is_true
@@ -53,20 +53,20 @@ module Ai4r
       end
 
       def test_should_accept_interhitance_and_override_param_info
-        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "description"}, :second => {:description => "description"}}
+        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "descr"}, :second => {:description => "descr"}}
         assert_nothing_thrown(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
       end
 
       def test_should_not_run_check_if_check_is_not_a_proc
-        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "description"}, :second => {:description => "description", :check => "asdf"}}
+        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "descr"}, :second => {:description => "descr", :check => "asdf"}}
         assert_nothing_thrown(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
 
-        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "description"}, :second => {:description => "description", :check => nil}}
+        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "descr"}, :second => {:description => "descr", :check => nil}}
         assert_nothing_thrown(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
       end
 
       def test_should_pass_default_nil_checker_to_param_info
-        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "description"}, :second => {:description => "description", :check => ParamNilChecker}}
+        ChildInitParamPseudoClass.send :parameters_info, {:first => {:description => "descr"}, :second => {:description => "descr", :check => ParamNilChecker}}
         assert_raise(ParameterizableValueIncorrect) {ChildInitParamPseudoClass.new "foo",nil}
       end
 
