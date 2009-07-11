@@ -60,7 +60,7 @@ module Ai4r
 end
 
 
-# PATCH MONKEY
+# Monkey Patch
 class Class
 
   # checks whether or not a method named 'initialize' has been added and if the Parameterizable-module is included
