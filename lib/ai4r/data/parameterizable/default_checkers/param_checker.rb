@@ -9,6 +9,12 @@
 
 module Ai4r
   module Data
+
+    # Is the base class for all the generalized ParamChecker-classes
+    # Classes inheriting from ParamChecker have to implement the method 'call'.
+    # Otherwise an exception will be thrown
+    # Should return true if the check is passed, otherwise false.
+
     class ParamChecker
 
       def self.call(val)

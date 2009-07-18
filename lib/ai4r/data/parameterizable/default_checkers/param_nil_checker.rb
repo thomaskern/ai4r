@@ -9,6 +9,10 @@
 
 module Ai4r
   module Data
+
+    # ParamNilChecker checks, whether or not the passed value
+    # is nil. Returns true if it is not nil, otherwise false
+
     class ParamNilChecker < ParamChecker
 
       def self.call(val)
